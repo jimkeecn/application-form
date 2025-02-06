@@ -1,0 +1,141 @@
+@if(formService.entity() !== null){
+    <div class="w-full grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+        @if(formService.entity()?.getConfig()?.salutation?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field test-id="salutation" [formCtrl]="getFormControlName('salutation')" [fieldConfig]="formService.entity()?.getConfig()?.salutation!" [dropdownOptions]="sdService.getStaticDataTitle()"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.formaltitle?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.formaltitle!" [formCtrl]="getFormControlName('formaltitle')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.firstName?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.firstName!" [formCtrl]="getFormControlName('firstName')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.middleName?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.middleName!" [formCtrl]="getFormControlName('middleName')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.lastName?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.lastName!" [formCtrl]="getFormControlName('lastName')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.surname?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.surname!" [formCtrl]="getFormControlName('surname')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.akas?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.akas!" [formCtrl]="getFormControlName('akas')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.nonIndividualName?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.nonIndividualName!" [formCtrl]="getFormControlName('nonIndividualName')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.businessName?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.businessName!" [formCtrl]="getFormControlName('businessName')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.dateOfBirth?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.dateOfBirth!" [formCtrl]="getFormControlName('dateOfBirth')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.dateOfDeath?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.dateOfDeath!" [formCtrl]="getFormControlName('dateOfDeath')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.sex?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.sex!"  [formCtrl]="getFormControlName('sex')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.isPublic?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.isPublic!" [formCtrl]="getFormControlName('isPublic')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.business?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.business!" [formCtrl]="getFormControlName('business')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.homePhone?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.homePhone!" [formCtrl]="getFormControlName('homePhone')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.mobile?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.mobile!"  [formCtrl]="getFormControlName('mobile')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.fax?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.fax!" [formCtrl]="getFormControlName('fax')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.communicationType?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.communicationType!" [formCtrl]="getFormControlName('communicationType')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.contactEmail?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.contactEmail!"  [formCtrl]="getFormControlName('contactEmail')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.regulator?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.regulator!"  [formCtrl]="getFormControlName('regulator')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.licenseNo?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.licenseNo!" [formCtrl]="getFormControlName('licenseNo')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.fatcasStatus?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.fatcasStatus!" [formCtrl]="getFormControlName('fatcasStatus')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.otherFatcasStatus?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.otherFatcasStatus!"  [formCtrl]="getFormControlName('otherFatcasStatus')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.pepStatus?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.pepStatus!" [formCtrl]="getFormControlName('pepStatus')"></cxi-customized-form-field>
+            </div>
+        }
+        @if(formService.entity()?.getConfig()?.otherFatcasStatus?.isEnabled){
+            <div class="col-span-1">
+            <cxi-customized-form-field [fieldConfig]="formService.entity()?.getConfig()?.otherFatcasStatus!" [formCtrl]="getFormControlName('otherFatcasStatus')"></cxi-customized-form-field>
+            </div>
+        }
+    </div>
+    <div class="flex justify-end gap-4  mt-4">
+        <button mat-button color="primary" (click)="save()">Save</button>
+        <button mat-button color="accent" (click)="cancel()">Cancel</button>
+    </div>
+}
+@else {
+    <div role="alert" class="rounded-sm border-s-4 p-4">
+        <div class="flex items-center gap-2">
+          <strong class="block font-medium"> Please wait for the form being loaded.</strong>
+        </div>
+    </div>
+}
+

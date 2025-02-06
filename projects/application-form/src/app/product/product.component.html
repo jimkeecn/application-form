@@ -1,0 +1,26 @@
+<app-route-top-actions [noPrevious]="true" (clickNext)="next()"></app-route-top-actions>
+<ng-container [formGroup]="formService.product().form">
+    <div class="p3 w-full mt-4">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Choose a Product</mat-label>
+            <mat-select formControlName="productId">
+                @for(option of products();track option.id){
+                    <mat-option [value]="option.id">
+                        {{ option.name }}
+                    </mat-option>
+                }
+            </mat-select>
+            @if(formService.product().form.get('productId')?.touched && formService.product().form.get('productId')?.invalid){
+                <mat-error>Product is required</mat-error>
+            }
+        </mat-form-field>
+    </div>
+    <div class="p3 w-full mt-4">
+        <mat-checkbox formControlName="productPds">
+            Please review the pds before you proceed, do you agree to confirm the pds?
+        </mat-checkbox>
+        @if(formService.product().form.get('productPds')?.touched && formService.product().form.get('productPds')?.invalid){
+            <mat-error>You must check this box before move forward</mat-error>
+        }
+    </div>
+</ng-container>

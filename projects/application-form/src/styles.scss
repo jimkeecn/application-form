@@ -1,0 +1,21 @@
+@use './styles/tailwind.scss'; // Tailwind first
+@use './styles/mixins.scss'; // Custom mixins
+@use './styles/variables.scss'; // Variables
+@use './styles/theme-colors.scss' as theme; // Theme colors
+@use '@angular/material' as mat;
+html {
+  @include mat.theme((
+    color:  (
+      primary: theme.$primary-palette,
+      tertiary: theme.$tertiary-palette,
+      theme-type: light,
+    ),
+    density: 0,
+  ));
+}
+
+
+html, body { height: 100%;   }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+

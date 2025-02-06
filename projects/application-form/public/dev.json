@@ -1,0 +1,27 @@
+{
+    "titles": [
+      { "id": 1, "value": "Mr." },
+      { "id": 2, "value": "Mrs." },
+      { "id": 3, "value": "Miss" }
+    ],
+    "countries": [
+      { "id": 1, "name": "Australia" },
+      { "id": 2, "name": "United States" },
+      { "id": 3, "name": "Canada" }
+    ],
+    "referencesTypes": [
+      { "id": 1, "type": "Personal" },
+      { "id": 2, "type": "Professional" }
+    ],
+    "securityQuestions": [
+      { "id": 1, "question": "What is your mother's maiden name?" },
+      { "id": 2, "question": "What was the name of your first pet?" },
+      { "id": 3, "question": "What is the name of the street you grew up on?" }
+    ],
+    "communicationsPreferences": [
+      { "id": 1, "preference": "Email" },
+      { "id": 2, "preference": "Phone" },
+      { "id": 3, "preference": "SMS" }
+    ]
+  }
+  

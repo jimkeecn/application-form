@@ -1,0 +1,111 @@
+@if(fieldConfig){
+    @switch (fieldConfig.fieldType) {
+      @case ('text') {
+          <mat-form-field class="w-full" aria-label="cxi-text">
+              <mat-label aria-label="field-label">{{fieldConfig.label}}</mat-label>
+              <input matInput type="text" [formControl]="newControl" [placeholder]="fieldConfig.placeholder">
+              @if (newControl.value) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="newControl.patchValue(null)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+              @if(newControl.touched && newControl.invalid){
+                <mat-error>test error</mat-error>
+              }
+              <mat-hint align="start"><strong>{{fieldConfig.helper}}</strong> </mat-hint>
+              <mat-hint align="end"><strong></strong> </mat-hint>
+          </mat-form-field>
+      }
+      @case ('address'){
+          <input hidden [formControl]="newControl">
+          <mat-form-field class="w-full" aria-label="cxi-address">
+            <mat-label aria-label="field-label">{{fieldConfig.label}}</mat-label>
+            <input matInput #addressAutoComplete type="text"
+            [matAutocomplete]="addressAuto" [formControl]="addressLookUp" 
+            [placeholder]="fieldConfig.placeholder">
+            
+            @if (newControl.value) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="addressLookUp.patchValue(null)">
+                <mat-icon>close</mat-icon>
+                </button>
+            }
+            
+            <mat-hint align="start"><strong>Please type your address and select from the dropdown.</strong> </mat-hint>
+            <mat-hint align="end">We only support address lookup in Australia and New Zealand. </mat-hint>
+            
+            <mat-autocomplete #addressAuto="matAutocomplete">
+                @for(option of addressList;track option){
+                <mat-option [value]="option" (click)="setAddress(option)">{{option}}</mat-option>
+                }
+            </mat-autocomplete>
+          </mat-form-field>
+      }
+      @case ('dropdown') {
+          <mat-form-field class="w-full" aria-label="cxi-dropdown">
+              <mat-label aria-label="field-label">{{fieldConfig.label}}</mat-label>
+              <mat-select [formControl]="newControl" [placeholder]="fieldConfig.placeholder">
+                @for(option of dropdownOptions; track option.name) {
+                  <mat-option [value]="option.name">{{option.name}}</mat-option>
+                }
+              </mat-select>
+              @if(newControl.touched && newControl.invalid){
+                <mat-error>test error</mat-error>
+              }
+              <mat-hint align="start"><strong>{{fieldConfig.helper}}</strong> </mat-hint>
+              <mat-hint align="end"><strong></strong> </mat-hint>
+          </mat-form-field>
+      }
+      @case ('auto-complete') {
+          <mat-form-field class="w-full" aria-label="cxi-auto-complete">
+              <mat-label aria-label="field-label">{{fieldConfig.label}}</mat-label>
+              <input   #autoCompleteInput
+                        type="text"
+                       [placeholder]="fieldConfig.placeholder" 
+                       matInput
+                       [formControl]="newControl"
+                       [matAutocomplete]="auto"
+                       (input)="filter()"
+                       (focus)="filter()">
+                <mat-autocomplete requireSelection #auto="matAutocomplete">
+                  @for(option of filteredDropdownOptions();track option.name){
+                    <mat-option [value]="option.name">{{option.name}}</mat-option>
+                  }
+                </mat-autocomplete>
+                @if(newControl.touched && newControl.invalid){
+                  <mat-error>test error</mat-error>
+                }
+              <mat-hint align="start"><strong>{{fieldConfig.helper}}</strong> </mat-hint>
+              <mat-hint align="end"><strong></strong> </mat-hint>
+          </mat-form-field>
+      }
+      @case ('datepicker') {
+          <mat-form-field class="w-full" aria-label="cxi-datepicker">
+              <mat-label aria-label="field-label">{{fieldConfig.label}}</mat-label>
+              <input matInput [matDatepicker]="picker" [formControl]="newControl" [placeholder]="fieldConfig.placeholder">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if(newControl.touched && newControl.invalid){
+                <mat-error>test error</mat-error>
+              }
+              <mat-hint align="start"><strong>{{fieldConfig.helper}}</strong> </mat-hint>
+              <mat-hint align="end"><strong></strong> </mat-hint>
+          
+          </mat-form-field>
+      }
+      @case ('multiple-select') {
+          <span aria-label="cxi-multi-select" class="w-full p-2">Sorry We currently does not support this field type</span>
+      }
+      @case ('checkbox') {
+          <ng-container aria-label="checkbox">
+            <mat-checkbox  [formControl]="newControl">{{fieldConfig.label}}</mat-checkbox>
+            @if(newControl.touched && newControl.invalid){
+                <mat-error>test error</mat-error>
+            }
+          </ng-container>
+          
+      }
+  }
+  } @else {
+    <span class="w-full p-2">Field is missing configuration.</span>
+  }
+  

@@ -1,0 +1,16 @@
+<div class="flex w-full" [ngClass]="{
+    'justify-start': !noPrevious && noNext,
+    'justify-end': noPrevious && !noNext,
+    'justify-between': !noPrevious && !noNext
+  }" >
+    @if(!noPrevious){
+        <div aria-label="goback" class="flex justify-start hover:bg-slate-200 cursor-pointer p-2" (click)="onBackClick()">
+            <mat-icon >chevron_left</mat-icon> Go Back 
+        </div>
+    }
+    @if(!noNext){
+        <div aria-label="gonext"  class="flex justify-end hover:bg-slate-200 cursor-pointer p-2" (click)="onNextClick()">
+            Next <mat-icon>chevron_right</mat-icon>
+        </div>
+    }
+</div>

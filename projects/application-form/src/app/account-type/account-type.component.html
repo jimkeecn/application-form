@@ -1,0 +1,20 @@
+<app-route-top-actions (clickNext)="next()" (clickBack)="back()"></app-route-top-actions>
+<ng-container [formGroup]="formService.account().form">
+    <div class="p3 w-full mt-4">
+        <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Choose an Account Type</mat-label>
+            <mat-select formControlName="accountTypeId">
+                @for(option of types();track option.id){
+                    <mat-option [value]="option.name">
+                        {{ option.name }}
+                    </mat-option>
+                }
+            </mat-select>
+            @if(formService.account().form.get('accountTypeId')?.touched && formService.account().form.get('accountTypeId')?.invalid){
+                <mat-error>
+                    Account Type is required
+                </mat-error>
+            }
+        </mat-form-field>
+    </div>
+</ng-container>

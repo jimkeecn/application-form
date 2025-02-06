@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@use './variables.scss' as vars; // Use SCSS `@use` for proper scoping
+
+
+// Angular Material palettes
+$custom-primary-palette: mat.m2-define-palette(vars.$primary-color);
+$custom-accent-palette: mat.m2-define-palette(vars.$accent-color);
+$custom-warn-palette: mat.m2-define-palette(vars.$warn-color);
+
+// Angular Material theme definition
+html {
+    @include mat.theme((
+      color: (
+        theme-type: light,
+        primary: $custom-primary-palette,
+        accent: $custom-accent-palette,
+        warn: $custom-warn-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    ));
+}
+

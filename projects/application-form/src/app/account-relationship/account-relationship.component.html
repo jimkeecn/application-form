@@ -1,0 +1,64 @@
+<app-route-top-actions (clickNext)="next()" (clickBack)="back()"></app-route-top-actions>
+
+@if(formService.accountRelationships().length > 0){
+    <p class="mt-2 mb-2 text-lg">Please filled in all required entities.</p>
+    <mat-accordion class="w-full">
+        @for(type of formService.accountRelationships();track type.index){
+            <mat-expansion-panel [expanded]="currentIndex() === type.index" [disabled]="type.index > currentIndex()">
+                <mat-expansion-panel-header>
+                    Add {{type.relationshipName}}
+                </mat-expansion-panel-header>
+                @if(type.entityTypes && type.entityTypes.length > 0){
+                    <div class="w-full grid md:grid-cols-5 sm:grid-cols-1 gap-4">
+                        <mat-form-field class="md:col-span-3 sm:col-span-1" aria-label="cxi-dropdown">
+                            <mat-label aria-label="field-label">Select A Entity Type</mat-label>
+                            <mat-select [formControl]="type.selectedEntity" placeholder="E.g Individual or Company">
+                              @for(option of type.entityTypes; track option.entityName) {
+                                <mat-option [value]="option.entityName">{{option.entityName}}</mat-option>
+                              }
+                            </mat-select>
+                            @if(type.selectedEntity.hasError('required')){
+                                <mat-error>This field is required</mat-error>
+                              }
+                        </mat-form-field>
+                        <button class="col-span-1" mat-button color="primary" (click)="addEntity(type)">Add Entity</button>
+                    </div>
+                }@else {
+                    @switch (type.loader$ | async) {
+                        @case (true) {
+                            <div role="alert" class="rounded-sm border-s-4 p-4">
+                                <div class="flex items-center gap-2">
+                                  <strong class="block font-medium"> We are fetching entity types back, please wait. </strong>
+                                </div>
+                            </div>
+                        }
+                        @default {
+                            <div role="alert" class="rounded-sm border-s-4 p-4">
+                                <div class="flex items-center gap-2">
+                                  <strong class="block font-medium"> We cannot find any entity types. </strong>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                @if(type.entities.length > 0){
+                    <entity-tree-view  [treeData]="type.treeView()"></entity-tree-view>
+                }
+
+                
+                @if(type.index >= currentIndex()){
+                    <mat-action-row>
+                        <button mat-button (click)="nextRelationship(type)" [attr.aria-label]="'next-panel-'+type.index">Next</button>
+                    </mat-action-row>
+                }
+            </mat-expansion-panel>
+        }
+    </mat-accordion>
+}
+@else {
+    <div role="alert" class="rounded-sm border-s-4 p-4" aria-label="warming">
+        <div class="flex items-center gap-2">
+          <strong class="block font-medium"> Please wait patiently. No account relationships found.  If you still not see this step in a couple mins please let admin knows </strong>
+        </div>
+    </div>
+}
