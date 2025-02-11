@@ -18,6 +18,7 @@ export interface IInputAccountRelationshipEntity extends IAccountRelationshipEnt
 }
 
 export interface IInputEntityFields extends IEntityConfigBase{
+    parentId?: string;
 }
 
 export interface IInputAccountEntityRelationship{

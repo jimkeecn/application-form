@@ -10,10 +10,10 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { FormFieldComponent } from '../../shared/form-field/form-field.component';
 import { IEntityFields } from '../../models/interface/field_config';
 import { OutputService } from '../../services/output.service';
-import { RelationshipService } from '../../services/relationship.service';
+import { RelationshipService } from '../../states/relationship.service';
 import { Subject, takeUntil } from 'rxjs';
 import { AccountEntity } from '../../models/class/accountEntity';
-import { StaticDataService } from '../../services/static-data.service';
+import { StaticDataService } from '../../states/static-data.service';
 
 @Component({
   selector: 'app-entity-form',
@@ -23,7 +23,7 @@ import { StaticDataService } from '../../services/static-data.service';
 })
 export class EntityFormComponent {
   destroy$ = new Subject<void>();
-  currentRelationship!: string;
+  currentParentRelationship!: string;
   constructor(private router: Router, public formService: FormService, private opService:OutputService,private rsService:RelationshipService, public sdService:StaticDataService) { 
     effect(() => { 
       //consoleLog(this.formService.accountRelationships());
@@ -32,10 +32,19 @@ export class EntityFormComponent {
 
   ngOnInit() {
     this.rsService.accountRelationshipEntityConfigUpdate$.pipe(takeUntil(this.destroy$)).subscribe((c) => { 
+      
       if (c.id && c.entityType && c.relationshipType && c.accountType && c.config) {
-        this.currentRelationship = c.relationshipType;
-        this.formService.entity.set(new AccountEntity(c.id,c.entityType,c.relationshipType,c.accountType,c.config));
+        if (c.parentId) {
+          this.formService.accountRelationships().forEach(r => { 
+            consoleLog(r.entities.find(e => e.id === c.parentId));
+            this.currentParentRelationship = r.entities.find(e => e.id === c.parentId) ? r.relationshipName : this.currentParentRelationship;
+          })
+        } else {
+          this.currentParentRelationship = c.relationshipType;
+        }
+        this.formService.entity.set(new AccountEntity(c.id,c.entityType,c.relationshipType,c.accountType,c.config, c.parentId));
       } 
+      console.log('currentParentRelationship', this.currentParentRelationship);
     });
   }
   ngOnDestroy() { 
@@ -44,10 +53,11 @@ export class EntityFormComponent {
   }
 
   save() {
+    
     this.formService.entity()?.form.getForm().markAllAsTouched();
-    if (this.currentRelationship && this.formService.entity()?.form.getForm().valid) {
+    if (this.currentParentRelationship && this.formService.entity()?.form.getForm().valid) {
       this.formService.accountRelationships.update(rel => { 
-        const relationship = rel.find(r => r.relationshipName === this.currentRelationship);
+        const relationship = rel.find(r => r.relationshipName === this.currentParentRelationship);
         rel.forEach(r => { 
           r.selectedEntityReset();
           r.destroyLoader(); //prevent memory leak..
@@ -55,16 +65,21 @@ export class EntityFormComponent {
         if (relationship) { 
           consoleLog(this.formService.entity());
           relationship.addEntity(this.formService.entity());
+          relationship.updateTreeView();
         }
         return [...rel];
       })
-      this.router.navigate(['/account-relationships'], { skipLocationChange: true });
+      this.router.navigate(['/account-relationships'], { skipLocationChange: true }).then(() => { 
+        this.rsService.resetAccountRelationshipEntityConfigUpdate();
+        this.formService.entity.set(null);
+        console.log('after entity save', this.formService.entity());
+      });
     }
   }
 
   cancel() {
     this.formService.accountRelationships.update(rel => { 
-      const relationship = rel.find(r => r.relationshipName === this.currentRelationship);
+      const relationship = rel.find(r => r.relationshipName === this.currentParentRelationship);
       rel.forEach(r => { 
         r.selectedEntityReset();
         r.destroyLoader(); //prevent memory leak..

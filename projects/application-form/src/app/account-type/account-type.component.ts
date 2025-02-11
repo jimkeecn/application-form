@@ -4,10 +4,11 @@ import { BasicAngularModule } from '../../modules/angular.module';
 import { consoleLog } from '../../shared/shared.function';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from '../../services/form.service';
-import { StaticDataService } from '../../services/static-data.service';
+import { StaticDataService } from '../../states/static-data.service';
 import { distinctUntilChanged } from 'rxjs';
 import { IStaticData } from '../../models/interface/staticData';
 import { OutputService } from '../../services/output.service';
+import { AccountTypesService } from '../../states/account-types.service';
 
 @Component({
   selector: 'app-account-type',
@@ -19,13 +20,15 @@ export class AccountTypeComponent {
 
   types = signal<IStaticData[]>([]);
 
-  constructor(private route: ActivatedRoute, public formService: FormService, private staticService: StaticDataService, private router:Router, private opService:OutputService) {}
+  constructor(private route: ActivatedRoute, public formService: FormService,
+    private staticService: StaticDataService, private router: Router, private opService: OutputService,
+  private atState:AccountTypesService) { }
 
    ngOnInit() {
       const currentRouteName = this.route.snapshot.routeConfig?.path;
       console.log('Current Route Name:', currentRouteName);
-      this.staticService.accountTypes.pipe(distinctUntilChanged()).subscribe(types => { 
-        this.types.set(types);
+      this.atState.state$.pipe(distinctUntilChanged()).subscribe(state => { 
+        this.types.set(state.accountTypes);
         console.log(this.types());
       });
   }

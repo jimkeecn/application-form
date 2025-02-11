@@ -36,6 +36,7 @@ export class EntityTreeViewComponent {
       width: '800px',
       height: '600px',
       hasBackdrop: true,
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {

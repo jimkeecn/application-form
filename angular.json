@@ -21,7 +21,6 @@
             "index": "projects/application-form/src/index.html",
             "browser": "projects/application-form/src/main.ts",
             "polyfills": [
-              "zone.js"
             ],
             "tsConfig": "projects/application-form/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -85,8 +84,6 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "polyfills": [
-              "zone.js",
-              "zone.js/testing"
             ],
             "tsConfig": "projects/application-form/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",

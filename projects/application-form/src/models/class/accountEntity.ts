@@ -49,9 +49,9 @@ export class AccountEntity{
     }
 
 
-    constructor(id: string, entityType: string, relationshipType: string, accountType: string, config?: Partial<IEntityFields>) {
+    constructor(id: string, entityType: string, relationshipType: string, accountType: string, config?: Partial<IEntityFields>, parentId?: string) {
         this.id = id;
-        this._parentId = null;
+        this._parentId = parentId || null;
         this._relationshipTypeList = [];
         this._relationshipType = relationshipType;
         this._entityType = entityType;
@@ -451,7 +451,8 @@ export class AccountEntity{
             id: this.id,
             name,
             relationshipType: this._relationshipType!,
-            entityType: this._entityType!
+            entityType: this._entityType!,
+            accountType: this._accountType,
         } as IEntityCardInfo;
     }
     

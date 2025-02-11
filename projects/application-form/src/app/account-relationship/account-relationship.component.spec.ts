@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IAccountRelationshipComponent } from './account-relationship.component';
-import { RelationshipService } from '../../services/relationship.service';
+import { RelationshipService } from '../../states/relationship.service';
 import { environment } from '../../environments/environment.development';
 import { AccountRelationship } from '../../models/class/accountRelationship';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';

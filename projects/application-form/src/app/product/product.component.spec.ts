@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductComponent } from './product.component';
 import { Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StaticDataService } from '../../services/static-data.service';
+import { StaticDataService } from '../../states/static-data.service';
 import { environment } from '../../environments/environment.development';
 
 

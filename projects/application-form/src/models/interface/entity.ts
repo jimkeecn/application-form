@@ -16,6 +16,7 @@ export interface IAccountRelationshipEntity{
 }
 
 export interface IAccountRelationshipEntityConfigUpdate extends IEntityConfigBase{
+    parentId?: string;
 }
 
 
@@ -24,6 +25,7 @@ export interface IEntityCardInfo{
     name: string;
     relationshipType: string;
     entityType: string;
+    accountType: string;
 }
 
 export interface IEntityTreeView{
@@ -31,4 +33,9 @@ export interface IEntityTreeView{
     parentId: string;
     cardInfo: IEntityCardInfo;
     children: IEntityTreeView[];
+}
+
+export enum EntityType{
+    Individual = 'Individual',
+    Company = 'Company'
 }

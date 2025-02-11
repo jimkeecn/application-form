@@ -26,3 +26,7 @@ export interface IOutputEntityRelationship{
     relationshipName: string;
     entityType: string;
 }
+
+export interface IOutputEntityRelationshipWithParentId extends IOutputEntityRelationship{
+    parentId: string;
+}

@@ -1,0 +1,1 @@
+//Not sure how many routes we have here yet. will need to replace all navigation function within component by using route state to trigger navigation.

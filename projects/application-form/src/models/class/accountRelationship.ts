@@ -16,6 +16,7 @@ export class AccountRelationship extends Loader{
     readonly max: number;
     private _entityTypes: IAccountRelationshipEntity[] = [];
     private _entities: AccountEntity[] = [];
+    private _treeData: IEntityTreeView[] = [];
 
     selectedEntity: FormControl;
 
@@ -64,32 +65,39 @@ export class AccountRelationship extends Loader{
         this.selectedEntity.reset();
     }
 
-    treeView(): IEntityTreeView[]{
+    get treeData(): IEntityTreeView[] {
+        return this._treeData;
+    }
+      
+    updateTreeView() {
+        this._treeData = this.buildTreeView(); // Call only when data changes
+    }
+    
+    private buildTreeView(): IEntityTreeView[] {
         const entityMap = new Map<string, IEntityTreeView>();
         const roots: IEntityTreeView[] = [];
-
-        //Assign entity into the Map in order later to use
+        
         for (const entity of this._entities) {
             const treeNode: IEntityTreeView = {
-                id: entity.id,
-                parentId: entity.parentId ?? '',
-                cardInfo: entity.retrieveEntityCardInfo(),
-                children: []
+            id: entity.id,
+            parentId: entity.parentId ?? '',
+            cardInfo: entity.retrieveEntityCardInfo(),
+            children: []
             };
             entityMap.set(entity.id, treeNode);
         }
-
+        
         for (const entity of this._entities) {
             const treeNode = entityMap.get(entity.id);
-            if (!treeNode) continue; 
-    
+            if (!treeNode) continue;
+        
             if (entity.parentId && entityMap.has(entity.parentId)) {
-                entityMap.get(entity.parentId)!.children.push(treeNode); //push the child node to the parent node
+            entityMap.get(entity.parentId)!.children.push(treeNode);
             } else {
-                roots.push(treeNode); //no ParentId, so it's a root node
+            roots.push(treeNode);
             }
         }
-
+        console.log('Built tree view:', roots);
         return roots;
     }
 }

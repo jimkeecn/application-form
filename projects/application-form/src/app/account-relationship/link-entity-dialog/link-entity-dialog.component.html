@@ -1,22 +1,24 @@
 <div class="p-4 mt-4">
         <!-- Relationship Dropdown -->
-    @if(relationshipTypes && relationshipTypes.length > 0){
+    @if(relationshipTypes()){
         <div class="mb-4 grid grid-cols-1 gap-4">
             <mat-form-field class="col-span-1">
                 <mat-label>Select Relationship</mat-label>
                 <mat-select [formControl]="selectedRelationship">
-                    @for (relationship of relationshipTypes; track relationship.relationshipName) {
+                    @for (relationship of relationshipTypes(); track relationship.relationshipName) {
                     <mat-option [value]="relationship.relationshipName">
                         {{ relationship.relationshipName }}
                     </mat-option>
                     }
                 </mat-select>
             </mat-form-field>
-            
-            <!-- Fetch Entity Button -->
-            <button mat-button color="primary" class="col-span-1" (click)="fetchEntities()" [disabled]="!selectedRelationship.value">
-            Fetch Entities
-            </button>
+            @if(!this.entityTypes || this.entityTypes.length === 0){
+                <!-- Fetch Entity Button -->
+                <button mat-button color="primary" class="col-span-1" (click)="fetchEntities()" [disabled]="!selectedRelationship.value">
+                    Fetch Entities
+                </button>
+            }
+        
         </div>  
     } @else {
         <div role="alert" class="rounded-sm border-s-4 p-4">
@@ -26,34 +28,34 @@
         </div>
     }
 
-
-    @if(relationshipTypes && relationshipTypes.length > 0 && entityTypes && entityTypes.length > 0){
-        <!-- Entity Dropdown (Only Show When There Are Values) -->
-        <mat-form-field class="w-full">
-            <mat-label>Select Entity</mat-label>
-            <mat-select [formControl]="selectedEntity">
-            @for (entity of entityTypes; track entity.entityName) {
-                <mat-option [value]="entity.entityName">
-                {{ entity.entityName }}
-                </mat-option>
-            }
-            </mat-select>
-        </mat-form-field>
-    } @else if(relationshipTypes && relationshipTypes.length > 0 && entityTypes && entityTypes.length == 0){
-        <div role="alert" class="rounded-sm border-s-4 p-4">
-            <div class="flex items-center gap-2">
-            <strong class="block font-medium"> We are feteching the entity types back.</strong>
+    <div class="mb-4 grid grid-cols-1 gap-4">
+        @if(relationshipTypes() && entityTypes()){
+            <!-- Entity Dropdown (Only Show When There Are Values) -->
+            <mat-form-field class="w-full">
+                <mat-label>Select Entity</mat-label>
+                <mat-select [formControl]="selectedEntity">
+                @for (entity of entityTypes(); track entity.entityName) {
+                    <mat-option [value]="entity.entityName">
+                    {{ entity.entityName }}
+                    </mat-option>
+                }
+                </mat-select>
+            </mat-form-field>
+        } @else if(relationshipTypes() && entityTypes()){
+            <div role="alert" class="rounded-sm border-s-4 p-4">
+                <div class="flex items-center gap-2">
+                <strong class="block font-medium"> We are feteching the entity types back.</strong>
+                </div>
             </div>
-        </div>
-    }
-
-
-    <!-- Submit Button -->
-     @if(selectedEntity.valid && selectedRelationship.valid){
-        <div class="mt-4 flex justify-end">
-            <button mat-button color="primary" class="" (click)="addEntity()" [disabled]="!selectedEntity.value">
+        }
+        <!-- Submit Button -->
+        @if(selectedEntity.valid && selectedRelationship.valid){
+            <button mat-button color="primary" class="col-span-1" (click)="addEntity()" [disabled]="!selectedEntity.value">
                 Add Entity
             </button>
-        </div>
-     }
+        }
+    </div>
+    <button mat-button color="primary" class="col-span-1" (click)="close()">
+        Close
+    </button>
 </div>

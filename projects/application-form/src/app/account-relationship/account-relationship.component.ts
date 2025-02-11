@@ -1,6 +1,6 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { RelationshipService } from '../../services/relationship.service';
+import { RelationshipService } from '../../states/relationship.service';
 import { consoleLog } from '../../shared/shared.function';
 import { RouteTopActionsComponent } from '../../shared/route-top-actions/route-top-actions.component';
 import { BasicAngularModule } from '../../modules/angular.module';
@@ -13,11 +13,7 @@ import { CommonModule } from '@angular/common';
 import { OutputService } from '../../services/output.service';
 import { environment } from '../../environments/environment.development';
 import { AccountRelationship } from '../../models/class/accountRelationship';
-import { LinkEntityDialogComponent } from './link-entity-dialog/link-entity-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { AccountEntity } from '../../models/class/accountEntity';
-import { IEntityCardInfo } from '../../models/interface/entity';
-import { IOutputEntityRelationship } from '../../models/interface/output';
 import { EntityTreeViewComponent } from './entity-tree-view/entity-tree-view.component';
 
 @Component({

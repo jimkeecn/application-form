@@ -1,19 +1,21 @@
 import { booleanAttribute, ChangeDetectionStrategy, Component, EventEmitter, Input, output, Output, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { distinctUntilChanged, map, Observable, of, takeUntil, tap } from 'rxjs';
+import { distinctUntilChanged, map, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { IStaticDataCheck, IStaticDataGroup, StaticDataCheck, StaticDataGroup } from '../models/interface/staticData';
-import { StaticDataService } from '../services/static-data.service';
+import { StaticDataService } from '../states/static-data.service';
 import { environment } from '../environments/environment.development';
 import { FormService } from '../services/form.service';
-import { RelationshipService } from '../services/relationship.service';
+import { RelationshipService } from '../states/relationship.service';
 import { OutputService } from '../services/output.service';
 import { IOutputAccountRelationship, IOutputAccountType, IOutputProductId } from '../models/interface/output';
-import { IAccountRelationshipEntity, IProductEntityRestriction } from '../models/interface/entity';
+import { EntityType, IAccountRelationshipEntity, IProductEntityRestriction } from '../models/interface/entity';
 import { IAccountRelationship, IEntityAccountRelationship } from '../models/interface/relationship';
 import { IEntityFields } from '../models/interface/field_config';
 import { convertToFullFormObject } from '../shared/shared.function';
 import { IInputAccountRelationship, IInputAccountRelationshipEntity, IInputEntityFields, IInputProductEntityRestriction, IInputStaticDataGroup } from '../models/interface/input';
+import { ProductService } from '../states/product.service';
+import { AccountTypesService } from '../states/account-types.service';
 @Component({
   selector: 'app-root',
   imports: [
@@ -30,17 +32,17 @@ export class AppComponent {
 
   @Input() 
   set products(value: any) { 
-    this.staticService.setProducts(value);
+    this.productState.setProducts(value);
   }
 
   @Input()
   set accountTypes(value: any) { 
-    this.staticService.setAccountTypes(value);
+    this.atState.setAccountTypes(value);
   }
 
   @Input()
   set staticData(value: IInputStaticDataGroup) { 
-    this.staticService.setStaticData(value);
+    this.staticState.setStaticData(value);
   }
 
   @Input()
@@ -81,6 +83,14 @@ export class AppComponent {
     }
   }
 
+  @Input()
+  set dialogRelationshipEntity(value: IInputAccountRelationshipEntity[]) {
+    if (value && value.length > 0) {
+      this.rsService.setAccountRelationshipEntityRelationshipEntityUpdate(value);
+      console.log(value);
+    }
+  }
+
 
   @Output() submitForm = new EventEmitter<any>();
   @Output() saveForm = new EventEmitter<any>();
@@ -89,8 +99,12 @@ export class AppComponent {
   @Output() outputAccountType$ = new EventEmitter<Partial<IOutputAccountType>>();
   @Output() outputAccountRelationship = new EventEmitter<Partial<IOutputAccountRelationship>>();
   @Output() accountTypeChange = new EventEmitter<any>();
-  constructor(private router: Router, private staticService:StaticDataService, private formService:FormService, private rsService:RelationshipService, private opService:OutputService) {  }
 
+  constructor(private router: Router, private staticState: StaticDataService,
+    private formService: FormService, private rsService: RelationshipService,
+    private opService: OutputService, private productState:ProductService,private atState:AccountTypesService) { }
+
+  destroy$ = new Subject<void>();
   ngOnInit() { 
     if (!environment.production) {
       console.log('-------------Development mode--------------');
@@ -101,22 +115,20 @@ export class AppComponent {
         staticData.referencesTypes = environment.referencesTypes;
         staticData.securityQuestions = environment.securityQuestions;
         staticData.communicationsPreferences = environment.communicationsPreferences;
-        this.staticService.setStaticData(staticData);
-        this.staticService.setProducts(environment.products);
-        this.staticService.setAccountTypes(environment.accountTypes);
+        this.staticState.setStaticData(staticData);
+        this.productState.setProducts(environment.products);
+        this.atState.setAccountTypes(environment.accountTypes);
       });
     }
 
 
     //Initiate Static Data, if all data is available, navigate to product page
-    this.staticService.staticData.pipe(
+    this.staticState.staticData.pipe(
+      takeUntil(this.destroy$),
       map(staticData => {
         let allCompleted = new StaticDataCheck();
-        // Ensure TypeScript knows the keys belong to IStaticDataGroup
         (Object.keys(staticData) as (keyof IStaticDataGroup)[]).forEach(key => {
-          // Check if the corresponding property in `staticData` has a value
           if (Array.isArray(staticData[key]) && staticData[key].length > 0) {
-            // Mark as true if the array has data
             allCompleted[key as keyof IStaticDataCheck] = true;
           }
         });
@@ -182,7 +194,7 @@ export class AppComponent {
               accountType: x.accountType,
               relationshipType: x.relationshipName,
               entityType: x.entityType,
-              config: convertToFullFormObject(environment.formFieldsConfig)
+              config: x.entityType == EntityType.Individual ? convertToFullFormObject(environment.formFieldsConfig[0]) : convertToFullFormObject(environment.formFieldsConfig[1]),
             } as IInputEntityFields;
           },1000);
         }
@@ -202,6 +214,38 @@ export class AppComponent {
         }
       }
     });
-    //Check Account Type Form Change
+
+    this.opService.getOutputDialogRelationshipEntity().subscribe(x => { 
+      if (x.relationshipName && x.accountType) {
+        if (!environment.production) {
+          setTimeout(() => {
+            this.dialogRelationshipEntity = environment.subEntityList.filter(entity => entity.relationshipName === x.relationshipName);
+          },1000);
+        }
+      }
+    });
+
+    this.opService.getOutputRelatinshipEntityConfigWithParentId().subscribe(x => {
+      if (x.relationshipName && x.accountType && x.entityType && x.parentId && x.id) {
+        if (!environment.production) {
+          console.log('getOutputRelatinshipEntityConfigWithParentId',x)
+          setTimeout(() => {
+            this.entityFormFields = {
+              id: x.id,
+              accountType: x.accountType,
+              relationshipType: x.relationshipName,
+              entityType: x.entityType,
+              config: x.entityType == EntityType.Individual ? convertToFullFormObject(environment.formFieldsConfig[0]) : convertToFullFormObject(environment.formFieldsConfig[1]),
+              parentId:x.parentId
+            } as IInputEntityFields;
+          },1000);
+        }
+      }
+    });
+  }
+
+  ngOnDestroy() { 
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

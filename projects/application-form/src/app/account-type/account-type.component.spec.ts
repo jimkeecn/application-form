@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AccountTypeForm } from '../../models/formgroup/accountType.form';
 import { environment } from '../../environments/environment.development';
-import { StaticDataService } from '../../services/static-data.service';
+import { StaticDataService } from '../../states/static-data.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 class ActivatedRouteMock {
