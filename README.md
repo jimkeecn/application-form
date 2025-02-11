@@ -1,59 +1,30 @@
-# CxiUiLibrary
+# Angular POC - Dynamic Form Receiver & Zoneless Web Component
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.2.
+## Overview
+This project is a **Proof of Concept (POC)** built using **Angular v19**, demonstrating:
+- The **use of `@Input()` and `@Output()`** to create a **dynamic form receiver** for a financial application.
+- An **experiment with the Zoneless feature** in Angular to enable seamless integration as a **web component**, avoiding zone conflicts when embedding within other Angular applications.
+- A **pure RxJS + Signal** approach for state management, eliminating reliance on Angular zones.
 
-## Development server
+Additionally, this POC implements a **custom Angular Material TreeView** to:
+- Visually represent **complex business logic** for adding **multi-entity account structures** in a financial application form.
+- Dynamically update form layouts based on **account relationships** and **entity-dependent dropdown options**.
 
-To start a local development server, run:
+## Features
+-  **Dynamic Form Handling**: Uses `@Input()` and `@Output()` to create a configurable form structure.
+-  **Zoneless Web Component**: Eliminates Zone.js dependencies to prevent conflicts when embedding in external Angular applications.
+-  **RxJS + Signals**: Implements a reactive, signal-based approach for UI state management.
+-  **Angular Material TreeView Integration**: Displays **account-entity relationships** with hierarchical structure.
+-  **Styled with Angular Material + TailwindCSS**: Provides a modern UI/UX.
 
-```bash
-ng serve
-```
+This `README.md` effectively highlights:
+- The **purpose** of the project.
+- **Key features** such as dynamic forms, zoneless web components, and treeview integration.
+- **Setup instructions** for running and testing.
+- **Technology stack** used.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Getting Started
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
+npm install
+ng serve application-form
 ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
