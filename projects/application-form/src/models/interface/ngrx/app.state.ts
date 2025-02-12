@@ -1,9 +1,10 @@
 import { provideState, provideStore } from "@ngrx/store";
 import { StaticDataState } from "./static-data.state";
+import { ProductDataState } from "./product-data.state";
 
 export interface IAppState{
     staticData: StaticDataState;
-    productData: any;
+    productData: ProductDataState;
 }
 
 //Make sure type check every change on the state name
