@@ -13,7 +13,7 @@ Additionally, this POC implements a **custom Angular Material TreeView** to:
 ## Features
 -  **Dynamic Form Handling**: Uses `@Input()` and `@Output()` to create a configurable form structure.
 -  **Zoneless Web Component**: Eliminates Zone.js dependencies to prevent conflicts when embedding in external Angular applications.
--  **RxJS + Signals**: Implements a reactive, signal-based approach for UI state management.
+-  **RxJS + Signals + NGRx**: Implements a reactive, signal-based, redux approach for UI state management.
 -  **Angular Material TreeView Integration**: Displays **account-entity relationships** with hierarchical structure.
 -  **Styled with Angular Material + TailwindCSS**: Provides a modern UI/UX.
 

@@ -18,7 +18,6 @@ export class StaticDataService {
     );
   }
 
-
   // Methods to update state (controlled access)
   setStaticData(value: IStaticDataGroup) {
     this.staticData$.next({ ...value }); 
@@ -43,4 +42,6 @@ export class StaticDataService {
   getStaticDataCommunicationsPreferences() {
     return [...this.staticData$.value.communicationsPreferences];
   }
+
+
 }

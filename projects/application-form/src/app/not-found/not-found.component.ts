@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { provideStore, provideState } from '@ngrx/store';
 
 @Component({
   selector: 'app-not-found',

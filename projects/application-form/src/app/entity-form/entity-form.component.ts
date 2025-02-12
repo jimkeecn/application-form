@@ -11,9 +11,13 @@ import { FormFieldComponent } from '../../shared/form-field/form-field.component
 import { IEntityFields } from '../../models/interface/field_config';
 import { OutputService } from '../../services/output.service';
 import { RelationshipService } from '../../states/relationship.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AccountEntity } from '../../models/class/accountEntity';
 import { StaticDataService } from '../../states/static-data.service';
+import { IAppState } from '../../models/interface/ngrx/app.state';
+import { Store } from '@ngrx/store';
+import { selectStaticDataCommunicationsPreferences, selectStaticDataCountries, selectStaticDataReferencesTypes, selectStaticDataSecurityQuestions, selectStaticDataTitles } from '../../states/static-data-state/static-data.selector';
+import { IStaticData } from '../../models/interface/staticData';
 
 @Component({
   selector: 'app-entity-form',
@@ -22,12 +26,27 @@ import { StaticDataService } from '../../states/static-data.service';
   styleUrl: './entity-form.component.scss'
 })
 export class EntityFormComponent {
+  titles$: Observable<IStaticData[]>;
+  countries$: Observable<IStaticData[]>;
+  referencesTypes$: Observable<IStaticData[]>;
+  securityQuestions$: Observable<IStaticData[]>;
+  communicationsPreferences$: Observable<IStaticData[]>;
+
   destroy$ = new Subject<void>();
   currentParentRelationship!: string;
-  constructor(private router: Router, public formService: FormService, private opService:OutputService,private rsService:RelationshipService, public sdService:StaticDataService) { 
+  constructor(private router: Router, public formService: FormService,
+    private opService: OutputService, private rsService: RelationshipService, private store: Store<IAppState>) { 
+    
     effect(() => { 
       //consoleLog(this.formService.accountRelationships());
     })
+
+    this.titles$ = this.store.select(selectStaticDataTitles);
+    this.countries$ = this.store.select(selectStaticDataCountries);
+    this.referencesTypes$ = this.store.select(selectStaticDataReferencesTypes);
+    this.securityQuestions$ = this.store.select(selectStaticDataSecurityQuestions);
+    this.communicationsPreferences$ = this.store.select(selectStaticDataCommunicationsPreferences);
+
   }
 
   ngOnInit() {

@@ -6,3 +6,9 @@ export interface IProductState{
     selectedProductName: IStaticData | null;
     //..add states here
 }
+
+
+export const initialProductState: IProductState = {
+    products: [],
+    selectedProductName: null
+}

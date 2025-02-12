@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, effect, Signal, signal  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouteTopActionsComponent } from '../../shared/route-top-actions/route-top-actions.component';
 import { BasicAngularModule } from '../../modules/angular.module';
@@ -11,6 +11,11 @@ import { RelationshipService } from '../../states/relationship.service';
 import { environment } from '../../environments/environment.development';
 import { OutputService } from '../../services/output.service';
 import { ProductService } from '../../states/product.service';
+import { Store } from '@ngrx/store';
+import { IAppState } from '../../models/interface/ngrx/app.state';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { selectProducts } from '../../states/product-state/product.selectors';
+
 @Component({
   selector: 'app-product',
   imports: [RouteTopActionsComponent,BasicAngularModule],
@@ -20,16 +25,19 @@ import { ProductService } from '../../states/product.service';
 export class ProductComponent {
   
   private destroy$ = new Subject<void>(); // Cleanup Subject
-  products = signal<IStaticData[]>([]);
+  products: any;
 
   constructor(private router: Router, public formService: FormService, private staticService: StaticDataService,
-    private rsService: RelationshipService, private opService: OutputService, private productState:ProductService) { }
+    private rsService: RelationshipService, private opService: OutputService, private store: Store<IAppState>) { 
+    //This is unnecessary but just a demonstration of how to use the toSignal function
+    this.products = toSignal(this.store.select(selectProducts), { initialValue: [] });
 
-  ngOnInit() {
-    this.productState.state$.pipe(distinctUntilChanged()).subscribe(state => { 
-      this.products.set(state.products);
+    effect(() => { 
       console.log(this.products());
     });
+  }
+
+  ngOnInit() {
   }
 
   next() {

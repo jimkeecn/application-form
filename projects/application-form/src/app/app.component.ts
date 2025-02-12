@@ -3,19 +3,19 @@ import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { distinctUntilChanged, map, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { IStaticDataCheck, IStaticDataGroup, StaticDataCheck, StaticDataGroup } from '../models/interface/staticData';
-import { StaticDataService } from '../states/static-data.service';
 import { environment } from '../environments/environment.development';
 import { FormService } from '../services/form.service';
 import { RelationshipService } from '../states/relationship.service';
 import { OutputService } from '../services/output.service';
 import { IOutputAccountRelationship, IOutputAccountType, IOutputProductId } from '../models/interface/output';
-import { EntityType, IAccountRelationshipEntity, IProductEntityRestriction } from '../models/interface/entity';
-import { IAccountRelationship, IEntityAccountRelationship } from '../models/interface/relationship';
-import { IEntityFields } from '../models/interface/field_config';
+import { EntityType } from '../models/interface/entity';
+import { IEntityAccountRelationship } from '../models/interface/relationship';
 import { convertToFullFormObject } from '../shared/shared.function';
 import { IInputAccountRelationship, IInputAccountRelationshipEntity, IInputEntityFields, IInputProductEntityRestriction, IInputStaticDataGroup } from '../models/interface/input';
 import { ProductService } from '../states/product.service';
 import { AccountTypesService } from '../states/account-types.service';
+import { StaticDataService } from '../states/static-data-state/static-data.service';
+import { ProductDataService } from '../states/product-state/product-data.service';
 @Component({
   selector: 'app-root',
   imports: [
@@ -32,7 +32,7 @@ export class AppComponent {
 
   @Input() 
   set products(value: any) { 
-    this.productState.setProducts(value);
+    this.productService.setProductData(value);
   }
 
   @Input()
@@ -42,7 +42,7 @@ export class AppComponent {
 
   @Input()
   set staticData(value: IInputStaticDataGroup) { 
-    this.staticState.setStaticData(value);
+    this.staticState.updateStaticData(value);
   }
 
   @Input()
@@ -102,7 +102,7 @@ export class AppComponent {
 
   constructor(private router: Router, private staticState: StaticDataService,
     private formService: FormService, private rsService: RelationshipService,
-    private opService: OutputService, private productState:ProductService,private atState:AccountTypesService) { }
+    private opService: OutputService,private atState:AccountTypesService, private productService:ProductDataService) { }
 
   destroy$ = new Subject<void>();
   ngOnInit() { 
@@ -115,15 +115,15 @@ export class AppComponent {
         staticData.referencesTypes = environment.referencesTypes;
         staticData.securityQuestions = environment.securityQuestions;
         staticData.communicationsPreferences = environment.communicationsPreferences;
-        this.staticState.setStaticData(staticData);
-        this.productState.setProducts(environment.products);
+        this.staticState.updateStaticData(staticData);
+        this.productService.setProductData(environment.products);
         this.atState.setAccountTypes(environment.accountTypes);
       });
     }
 
 
     //Initiate Static Data, if all data is available, navigate to product page
-    this.staticState.staticData.pipe(
+    this.staticState.staticData$.pipe(
       takeUntil(this.destroy$),
       map(staticData => {
         let allCompleted = new StaticDataCheck();
